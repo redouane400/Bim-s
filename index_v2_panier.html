@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>O'Bim's - V2 panier premium</title>
+<style>
+:root{
+  --bg:#0f172a;
+  --card:#18253d;
+  --card2:#102038;
+  --text:#fff;
+  --muted:#cbd5e1;
+  --yellow:#facc15;
+  --yellow2:#fde047;
+  --dark:#020617;
+  --line:rgba(255,255,255,.08);
+  --green:#22c55e;
+  --red:#ef4444;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:linear-gradient(180deg,#0f172a 0%, #091120 100%);
+  color:var(--text);
+}
+.app{
+  max-width:430px;
+  margin:0 auto;
+  min-height:100vh;
+  padding-bottom:110px;
+}
+.topbar{
+  position:sticky;
+  top:0;
+  z-index:20;
+  background:rgba(2,6,23,.94);
+  backdrop-filter:blur(8px);
+  padding:14px 16px;
+  border-bottom:1px solid var(--line);
+}
+.brand{font-size:28px;font-weight:800;margin:0}
+.sub{color:var(--muted);margin-top:4px;font-size:14px}
+.container{padding:16px}
+.card{
+  background:linear-gradient(180deg,var(--card) 0%, var(--card2) 100%);
+  border-radius:18px;
+  padding:15px;
+  margin-bottom:18px;
+  border:1px solid var(--line);
+  box-shadow:0 10px 25px rgba(0,0,0,.22);
+}
+.card img{
+  width:100%;
+  border-radius:12px;
+  margin-top:10px;
+  display:block;
+  object-fit:cover;
+}
+.product-title{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+}
+.product-title h2{
+  margin:0;
+  font-size:22px;
+}
+.price{
+  color:var(--yellow);
+  font-weight:800;
+  white-space:nowrap;
+}
+.desc{
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.45;
+  margin:10px 0 0;
+}
+button{
+  background:var(--yellow);
+  border:none;
+  padding:12px;
+  border-radius:12px;
+  width:100%;
+  font-weight:bold;
+  margin-top:12px;
+  cursor:pointer;
+}
+button:hover{background:var(--yellow2)}
+button.secondary{
+  background:#334155;
+  color:#fff;
+}
+button.secondary:hover{background:#475569}
+button.danger{
+  background:var(--red);
+  color:#fff;
+}
+button.danger:hover{background:#dc2626}
+.footer{
+  position:fixed;
+  bottom:0;
+  left:50%;
+  transform:translateX(-50%);
+  width:100%;
+  max-width:430px;
+  background:rgba(2,6,23,.97);
+  border-top:1px solid var(--line);
+  padding:14px 16px 18px;
+  z-index:30;
+}
+.footer-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+}
+.footer small{
+  display:block;
+  color:var(--muted);
+  margin-bottom:4px;
+}
+.footer strong{
+  font-size:22px;
+}
+.overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.6);
+  display:none;
+  z-index:40;
+}
+.drawer{
+  position:fixed;
+  left:50%;
+  bottom:0;
+  transform:translateX(-50%);
+  width:100%;
+  max-width:430px;
+  background:#0b1220;
+  border-top-left-radius:24px;
+  border-top-right-radius:24px;
+  border:1px solid var(--line);
+  padding:18px 16px 22px;
+  display:none;
+  z-index:50;
+  max-height:85vh;
+  overflow:auto;
+}
+.drawer h3{
+  margin:0 0 6px;
+  font-size:24px;
+}
+.drawer .muted{
+  color:var(--muted);
+  font-size:14px;
+}
+.cart-item{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  padding:14px 0;
+  border-bottom:1px solid var(--line);
+}
+.cart-item:last-child{border-bottom:none}
+.cart-item .name{font-weight:700}
+.cart-item .meta{color:var(--muted);font-size:13px;margin-top:4px}
+.line-total{
+  color:#fff;
+  font-weight:700;
+  margin-top:8px;
+}
+.qty-row{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-top:10px;
+}
+.qty-btn{
+  width:34px;
+  min-width:34px;
+  height:34px;
+  padding:0;
+  margin:0;
+  border-radius:10px;
+  font-size:18px;
+  font-weight:800;
+}
+.qty-value{
+  min-width:28px;
+  text-align:center;
+  font-weight:700;
+}
+.small-btn{
+  width:auto;
+  padding:8px 10px;
+  margin:0;
+  font-size:12px;
+  border-radius:10px;
+}
+.summary{
+  margin-top:14px;
+  padding-top:12px;
+  border-top:1px solid var(--line);
+}
+.summary-row{
+  display:flex;
+  justify-content:space-between;
+  margin:8px 0;
+  color:var(--muted);
+}
+.summary-row.total{
+  color:#fff;
+  font-weight:800;
+  font-size:20px;
+  margin-top:14px;
+}
+.field{margin-top:12px}
+.field label{
+  display:block;
+  margin-bottom:6px;
+  color:var(--muted);
+  font-size:14px;
+}
+.field input,.field select{
+  width:100%;
+  padding:12px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:#111827;
+  color:white;
+}
+.success{
+  background:rgba(34,197,94,.12);
+  border:1px solid rgba(34,197,94,.25);
+  border-radius:14px;
+  padding:14px;
+  margin-top:14px;
+}
+.hidden{display:none}
+.badge{
+  display:inline-block;
+  margin-top:10px;
+  background:rgba(250,204,21,.14);
+  color:#fde68a;
+  border:1px solid rgba(250,204,21,.22);
+  border-radius:999px;
+  padding:6px 10px;
+  font-size:12px;
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <div class="brand">O'Bim's 🍔</div>
+    <div class="sub">Fried Chicken • Burger • Creil</div>
+  </div>
+
+  <div class="container">
+    <div class="card">
+      <img src="images/hero.jpeg" alt="O'Bim's Creil">
+      <div class="badge">Démo V2 panier premium</div>
+    </div>
+
+    <div class="card">
+      <div class="product-title"><h2>Burgers</h2><div class="price">9,90 €</div></div>
+      <img src="images/burgers.jpg" alt="Burgers">
+      <p class="desc">Sélection burgers BIM'S.</p>
+      <button onclick="addToCart('Burgers', 9.90)">Commander</button>
+    </div>
+
+    <div class="card">
+      <div class="product-title"><h2>Tower</h2><div class="price">6,40 €</div></div>
+      <img src="images/tower.jpeg" alt="Tower">
+      <p class="desc">Burger classique BIM'S.</p>
+      <button onclick="addToCart('Tower', 6.40)">Commander</button>
+    </div>
+
+    <div class="card">
+      <div class="product-title"><h2>Tasty Beef</h2><div class="price">10,60 €</div></div>
+      <img src="images/tasty-beef.jpg" alt="Tasty Beef">
+      <p class="desc">Burger gourmand premium.</p>
+      <button onclick="addToCart('Tasty Beef', 10.60)">Commander</button>
+    </div>
+
+    <div class="card">
+      <div class="product-title"><h2>Solo Wings</h2><div class="price">7,90 €</div></div>
+      <img src="images/solo-wings.jpg" alt="Solo Wings">
+      <p class="desc">Format solo rapide à emporter.</p>
+      <button onclick="addToCart('Solo Wings', 7.90)">Commander</button>
+    </div>
+
+    <div class="card">
+      <div class="product-title"><h2>Tornado Tandoori</h2><div class="price">7,30 €</div></div>
+      <img src="images/tornado-tandori.jpg" alt="Tornado Tandoori">
+      <p class="desc">Wrap chicken original ou spicy.</p>
+      <button onclick="addToCart('Tornado Tandoori', 7.30)">Commander</button>
+    </div>
+
+    <div class="card">
+      <div class="product-title"><h2>Wings</h2><div class="price">8,60 €</div></div>
+      <img src="images/wings.jpeg" alt="Wings">
+      <p class="desc">Poulet croustillant très visuel.</p>
+      <button onclick="addToCart('Wings', 8.60)">Commander</button>
+    </div>
+
+    <div class="card">
+      <div class="product-title"><h2>Wings Box</h2><div class="price">25,90 €</div></div>
+      <img src="images/wings-box.jpg" alt="Wings Box">
+      <p class="desc">Box à partager.</p>
+      <button onclick="addToCart('Wings Box', 25.90)">Commander</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="overlay" onclick="closeDrawer()"></div>
+
+<div class="drawer" id="cartDrawer">
+  <h3>Mon panier</h3>
+  <div class="muted">Simulation premium avec quantités</div>
+  <div id="cartItems" style="margin-top:12px;"></div>
+
+  <div class="summary">
+    <div class="summary-row"><span>Sous-total</span><span id="subtotal">0,00 €</span></div>
+    <div class="summary-row"><span>Frais</span><span id="fees">0,00 €</span></div>
+    <div class="summary-row total"><span>Total</span><span id="grandTotal">0,00 €</span></div>
+  </div>
+
+  <div id="checkoutSection" class="hidden">
+    <div class="field">
+      <label>Nom</label>
+      <input id="customerName" placeholder="Ex: Ahmed">
+    </div>
+    <div class="field">
+      <label>Téléphone</label>
+      <input id="customerPhone" placeholder="06 00 00 00 00">
+    </div>
+    <div class="field">
+      <label>Mode de retrait</label>
+      <select id="pickupMode">
+        <option>À emporter</option>
+        <option>Retrait sur place</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Heure souhaitée</label>
+      <input id="pickupTime" type="time" value="19:30">
+    </div>
+    <button onclick="confirmOrder()">Valider la commande</button>
+  </div>
+
+  <div id="successBox" class="success hidden">
+    <strong>Commande confirmée ✅</strong>
+    <div id="successText" style="margin-top:8px;"></div>
+  </div>
+
+  <button class="secondary" onclick="toggleCheckout()">Passer à la commande</button>
+  <button class="danger" onclick="clearCart()">Vider le panier</button>
+  <button class="secondary" onclick="closeDrawer()">Fermer</button>
+</div>
+
+<div class="footer">
+  <div class="footer-row">
+    <div>
+      <small>Panier actuel</small>
+      <strong id="bottomTotal">0,00 €</strong>
+    </div>
+    <button style="width:auto;margin-top:0;" onclick="openCart()">Voir panier</button>
+  </div>
+</div>
+
+<script>
+const cart = [];
+
+function euro(value){ return value.toFixed(2).replace('.', ',') + ' €'; }
+
+function addToCart(name, price){
+  const existing = cart.find(item => item.name === name);
+  if(existing){
+    existing.qty += 1;
+  } else {
+    cart.push({name, price, qty:1});
+  }
+  updateCart();
+  openCart();
+}
+
+function increaseQty(index){
+  cart[index].qty += 1;
+  updateCart();
+}
+
+function decreaseQty(index){
+  cart[index].qty -= 1;
+  if(cart[index].qty <= 0){
+    cart.splice(index, 1);
+  }
+  updateCart();
+}
+
+function removeItem(index){
+  cart.splice(index, 1);
+  updateCart();
+}
+
+function clearCart(){
+  cart.length = 0;
+  document.getElementById('checkoutSection').classList.add('hidden');
+  document.getElementById('successBox').classList.add('hidden');
+  updateCart();
+}
+
+function getSubtotal(){
+  return cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+}
+
+function getFees(){
+  return cart.length > 0 ? 0.50 : 0;
+}
+
+function updateCart(){
+  const subtotal = getSubtotal();
+  const fees = getFees();
+  const total = subtotal + fees;
+
+  document.getElementById('bottomTotal').textContent = euro(total);
+  document.getElementById('subtotal').textContent = euro(subtotal);
+  document.getElementById('fees').textContent = euro(fees);
+  document.getElementById('grandTotal').textContent = euro(total);
+
+  const box = document.getElementById('cartItems');
+
+  if(cart.length === 0){
+    box.innerHTML = '<div class="muted" style="margin-top:12px;">Votre panier est vide.</div>';
+    return;
+  }
+
+  box.innerHTML = cart.map((item, index) => {
+    const lineTotal = item.price * item.qty;
+    return `
+      <div class="cart-item">
+        <div>
+          <div class="name">${item.name}</div>
+          <div class="meta">Commande démo • À emporter</div>
+          <div class="line-total">${euro(lineTotal)}</div>
+          <div class="qty-row">
+            <button class="qty-btn secondary" onclick="decreaseQty(${index})">-</button>
+            <div class="qty-value">${item.qty}</div>
+            <button class="qty-btn secondary" onclick="increaseQty(${index})">+</button>
+            <button class="small-btn danger" onclick="removeItem(${index})">Supprimer</button>
+          </div>
+        </div>
+        <div class="price">${euro(item.price)}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+function openCart(){
+  document.getElementById('overlay').style.display = 'block';
+  document.getElementById('cartDrawer').style.display = 'block';
+}
+
+function closeDrawer(){
+  document.getElementById('overlay').style.display = 'none';
+  document.getElementById('cartDrawer').style.display = 'none';
+}
+
+function toggleCheckout(){
+  if(cart.length === 0){
+    alert('Ajoute au moins un produit au panier.');
+    return;
+  }
+  document.getElementById('checkoutSection').classList.toggle('hidden');
+  document.getElementById('successBox').classList.add('hidden');
+}
+
+function confirmOrder(){
+  if(cart.length === 0){
+    alert('Ajoute au moins un produit.');
+    return;
+  }
+
+  const name = document.getElementById('customerName').value.trim();
+  const phone = document.getElementById('customerPhone').value.trim();
+  const mode = document.getElementById('pickupMode').value;
+  const time = document.getElementById('pickupTime').value || '19:30';
+
+  if(!name || !phone){
+    alert('Remplis le nom et le téléphone.');
+    return;
+  }
+
+  const subtotal = getSubtotal();
+  const total = subtotal + getFees();
+
+  const itemsText = cart.map(item => item.name + ' x' + item.qty).join(', ');
+
+  document.getElementById('successText').innerHTML =
+    'Merci <strong>' + name + '</strong>.<br>' +
+    'Commande confirmée pour <strong>' + mode + '</strong> à <strong>' + time + '</strong>.<br>' +
+    'Téléphone : <strong>' + phone + '</strong><br>' +
+    'Articles : <strong>' + itemsText + '</strong><br>' +
+    'Total : <strong>' + euro(total) + '</strong>';
+
+  document.getElementById('successBox').classList.remove('hidden');
+  document.getElementById('checkoutSection').classList.add('hidden');
+}
+
+updateCart();
+</script>
+</body>
+</html>
