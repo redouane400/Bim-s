@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>O'Bim's - V3 app premium</title>
+<style>
+:root{
+  --bg:#0b1220;
+  --bg2:#0f172a;
+  --card:#172033;
+  --card2:#1b2942;
+  --text:#ffffff;
+  --muted:#cbd5e1;
+  --yellow:#facc15;
+  --yellow2:#fde047;
+  --line:rgba(255,255,255,.08);
+  --green:#22c55e;
+  --red:#ef4444;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial, Helvetica, sans-serif;
+  background:linear-gradient(180deg,var(--bg) 0%, var(--bg2) 100%);
+  color:var(--text);
+}
+.app{
+  max-width:430px;
+  margin:0 auto;
+  min-height:100vh;
+  padding-bottom:110px;
+}
+.topbar{
+  position:sticky;
+  top:0;
+  z-index:20;
+  background:rgba(2,6,23,.92);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+  padding:14px 16px;
+}
+.top-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+.brand-wrap{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.brand-thumb{
+  width:42px;
+  height:42px;
+  border-radius:12px;
+  object-fit:cover;
+  border:1px solid var(--line);
+}
+.brand{
+  font-size:26px;
+  font-weight:800;
+  margin:0;
+}
+.sub{
+  color:var(--muted);
+  margin-top:2px;
+  font-size:13px;
+}
+.cart-pill{
+  background:var(--yellow);
+  color:#111;
+  border-radius:999px;
+  padding:10px 14px;
+  font-weight:800;
+  font-size:14px;
+  border:none;
+}
+.container{padding:16px}
+.hero{
+  position:relative;
+  overflow:hidden;
+  border-radius:24px;
+  border:1px solid var(--line);
+  box-shadow:0 14px 30px rgba(0,0,0,.25);
+  margin-bottom:18px;
+}
+.hero img{
+  width:100%;
+  height:260px;
+  object-fit:cover;
+  display:block;
+  filter:brightness(.65);
+}
+.hero-overlay{
+  position:absolute;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  padding:18px;
+  background:linear-gradient(180deg,rgba(0,0,0,.05) 0%,rgba(0,0,0,.78) 100%);
+}
+.badge{
+  display:inline-block;
+  width:max-content;
+  padding:7px 11px;
+  border-radius:999px;
+  background:rgba(250,204,21,.14);
+  color:#fde68a;
+  border:1px solid rgba(250,204,21,.25);
+  font-size:12px;
+  margin-bottom:10px;
+}
+.hero h1{
+  margin:0 0 8px;
+  font-size:30px;
+  line-height:1.05;
+}
+.hero p{
+  margin:0;
+  color:#e5e7eb;
+  font-size:14px;
+  line-height:1.45;
+}
+.quick-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-bottom:18px;
+}
+.q-card{
+  background:linear-gradient(180deg,var(--card) 0%, var(--card2) 100%);
+  border-radius:18px;
+  border:1px solid var(--line);
+  padding:14px;
+}
+.q-card h3{
+  margin:0 0 6px;
+  font-size:16px;
+}
+.q-card p{
+  margin:0;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.4;
+}
+.section-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  margin:0 0 12px;
+}
+.section-head h2{
+  margin:0;
+  font-size:22px;
+}
+.section-head span{
+  color:var(--muted);
+  font-size:13px;
+}
+.chips{
+  display:flex;
+  gap:8px;
+  overflow:auto;
+  margin:0 0 14px;
+  padding-bottom:2px;
+  scrollbar-width:none;
+}
+.chips::-webkit-scrollbar{display:none}
+.chip{
+  white-space:nowrap;
+  padding:9px 13px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  background:#162033;
+  color:#fff;
+  font-size:13px;
+}
+.chip.active{
+  background:var(--yellow);
+  color:#111;
+  font-weight:800;
+  border-color:transparent;
+}
+.card{
+  background:linear-gradient(180deg,var(--card) 0%, var(--card2) 100%);
+  border-radius:20px;
+  padding:14px;
+  margin-bottom:16px;
+  border:1px solid var(--line);
+  box-shadow:0 10px 25px rgba(0,0,0,.18);
+}
+.card img{
+  width:100%;
+  border-radius:14px;
+  margin-top:10px;
+  display:block;
+  object-fit:cover;
+}
+.product-title{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+}
+.product-title h3{
+  margin:0;
+  font-size:22px;
+}
+.price{
+  color:var(--yellow);
+  font-weight:800;
+  white-space:nowrap;
+}
+.desc{
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.45;
+  margin:10px 0 0;
+}
+.tags{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:12px;
+}
+.tag{
+  padding:7px 10px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.04);
+  color:#e5e7eb;
+  font-size:12px;
+}
+button{
+  background:var(--yellow);
+  border:none;
+  padding:12px;
+  border-radius:12px;
+  width:100%;
+  font-weight:bold;
+  margin-top:12px;
+  cursor:pointer;
+}
+button:hover{background:var(--yellow2)}
+button.secondary{background:#334155;color:#fff}
+button.secondary:hover{background:#475569}
+button.danger{background:var(--red);color:#fff}
+button.danger:hover{background:#dc2626}
+.footer{
+  position:fixed;
+  bottom:0;
+  left:50%;
+  transform:translateX(-50%);
+  width:100%;
+  max-width:430px;
+  background:rgba(2,6,23,.97);
+  border-top:1px solid var(--line);
+  padding:14px 16px 18px;
+  z-index:30;
+}
+.footer-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+}
+.footer small{
+  display:block;
+  color:var(--muted);
+  margin-bottom:4px;
+}
+.footer strong{
+  font-size:22px;
+}
+.overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.6);
+  display:none;
+  z-index:40;
+}
+.drawer{
+  position:fixed;
+  left:50%;
+  bottom:0;
+  transform:translateX(-50%);
+  width:100%;
+  max-width:430px;
+  background:#0b1220;
+  border-top-left-radius:24px;
+  border-top-right-radius:24px;
+  border:1px solid var(--line);
+  padding:18px 16px 22px;
+  display:none;
+  z-index:50;
+  max-height:85vh;
+  overflow:auto;
+}
+.drawer h3{margin:0 0 6px;font-size:24px}
+.drawer .muted{color:var(--muted);font-size:14px}
+.cart-item{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  padding:14px 0;
+  border-bottom:1px solid var(--line);
+}
+.cart-item:last-child{border-bottom:none}
+.name{font-weight:700}
+.meta{color:var(--muted);font-size:13px;margin-top:4px}
+.line-total{color:#fff;font-weight:700;margin-top:8px}
+.qty-row{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-top:10px;
+  flex-wrap:wrap;
+}
+.qty-btn{
+  width:34px;
+  min-width:34px;
+  height:34px;
+  padding:0;
+  margin:0;
+  border-radius:10px;
+  font-size:18px;
+  font-weight:800;
+}
+.qty-value{min-width:28px;text-align:center;font-weight:700}
+.small-btn{width:auto;padding:8px 10px;margin:0;font-size:12px;border-radius:10px}
+.summary{
+  margin-top:14px;
+  padding-top:12px;
+  border-top:1px solid var(--line);
+}
+.summary-row{
+  display:flex;
+  justify-content:space-between;
+  margin:8px 0;
+  color:var(--muted);
+}
+.summary-row.total{
+  color:#fff;
+  font-weight:800;
+  font-size:20px;
+  margin-top:14px;
+}
+.field{margin-top:12px}
+.field label{
+  display:block;
+  margin-bottom:6px;
+  color:var(--muted);
+  font-size:14px;
+}
+.field input,.field select{
+  width:100%;
+  padding:12px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:#111827;
+  color:#fff;
+}
+.success{
+  background:rgba(34,197,94,.12);
+  border:1px solid rgba(34,197,94,.25);
+  border-radius:14px;
+  padding:14px;
+  margin-top:14px;
+}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <div class="top-row">
+      <div class="brand-wrap">
+        <img class="brand-thumb" src="images/hero.jpeg" alt="O'Bim's">
+        <div>
+          <div class="brand">O'Bim's</div>
+          <div class="sub">Fried Chicken • Burger • Creil</div>
+        </div>
+      </div>
+      <button class="cart-pill" type="button" id="topCartBtn">🛒 <span id="topCartCount">0</span></button>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="hero">
+      <img src="images/hero.jpeg" alt="O'Bim's Creil">
+      <div class="hero-overlay">
+        <div class="badge">Démo V3 • App premium</div>
+        <h1>Commandez sans appeler</h1>
+        <p>Expérience mobile premium avec panier dynamique, validation de commande et click & collect.</p>
+      </div>
+    </div>
+
+    <div class="quick-actions">
+      <div class="q-card">
+        <h3>Retrait rapide</h3>
+        <p>Commande prête et récupération au restaurant.</p>
+      </div>
+      <div class="q-card">
+        <h3>Fidélité</h3>
+        <p>Expérience premium pensée pour faire revenir les clients.</p>
+      </div>
+    </div>
+
+    <div class="section-head">
+      <h2>Nos produits</h2>
+      <span>Démo interactive</span>
+    </div>
+
+    <div class="chips">
+      <div class="chip active">Best sellers</div>
+      <div class="chip">Burgers</div>
+      <div class="chip">Chicken</div>
+      <div class="chip">Wings</div>
+      <div class="chip">Tacos</div>
+    </div>
+
+    <div class="card"><div class="product-title"><h3>Burgers</h3><div class="price">9,90 €</div></div><img src="images/burgers.jpg" alt="Burgers"><p class="desc">Sélection burgers BIM'S.</p><div class="tags"><span class="tag">Burger</span><span class="tag">Best seller</span></div><button type="button" onclick="addToCart('Burgers', 9.90)">Commander</button></div>
+
+    <div class="card"><div class="product-title"><h3>Tower</h3><div class="price">6,40 €</div></div><img src="images/tower.jpeg" alt="Tower"><p class="desc">Burger classique BIM'S.</p><div class="tags"><span class="tag">Simple</span><span class="tag">Rapide</span></div><button type="button" onclick="addToCart('Tower', 6.40)">Commander</button></div>
+
+    <div class="card"><div class="product-title"><h3>Tasty Beef</h3><div class="price">10,60 €</div></div><img src="images/tasty-beef.jpg" alt="Tasty Beef"><p class="desc">Burger gourmand premium.</p><div class="tags"><span class="tag">Premium</span><span class="tag">Signature</span></div><button type="button" onclick="addToCart('Tasty Beef', 10.60)">Commander</button></div>
+
+    <div class="card"><div class="product-title"><h3>Solo Wings</h3><div class="price">7,90 €</div></div><img src="images/solo-wings.jpg" alt="Solo Wings"><p class="desc">Format solo rapide à emporter.</p><div class="tags"><span class="tag">Wings</span><span class="tag">Solo</span></div><button type="button" onclick="addToCart('Solo Wings', 7.90)">Commander</button></div>
+
+    <div class="card"><div class="product-title"><h3>Tornado Tandoori</h3><div class="price">7,30 €</div></div><img src="images/tornado-tandori.jpg" alt="Tornado Tandoori"><p class="desc">Wrap chicken original ou spicy.</p><div class="tags"><span class="tag">Wrap</span><span class="tag">Chicken</span></div><button type="button" onclick="addToCart('Tornado Tandoori', 7.30)">Commander</button></div>
+
+    <div class="card"><div class="product-title"><h3>Wings</h3><div class="price">8,60 €</div></div><img src="images/wings.jpeg" alt="Wings"><p class="desc">Poulet croustillant très visuel.</p><div class="tags"><span class="tag">Chicken</span><span class="tag">Croustillant</span></div><button type="button" onclick="addToCart('Wings', 8.60)">Commander</button></div>
+
+    <div class="card"><div class="product-title"><h3>Wings Box</h3><div class="price">25,90 €</div></div><img src="images/wings-box.jpg" alt="Wings Box"><p class="desc">Box à partager.</p><div class="tags"><span class="tag">Box</span><span class="tag">Family</span></div><button type="button" onclick="addToCart('Wings Box', 25.90)">Commander</button></div>
+  </div>
+</div>
+
+<div class="overlay" id="overlay"></div>
+
+<div class="drawer" id="cartDrawer">
+  <h3>Mon panier</h3>
+  <div class="muted">Panier premium avec quantités et validation</div>
+  <div id="cartItems" style="margin-top:12px;"></div>
+
+  <div class="summary">
+    <div class="summary-row"><span>Sous-total</span><span id="subtotal">0,00 €</span></div>
+    <div class="summary-row"><span>Frais</span><span id="fees">0,00 €</span></div>
+    <div class="summary-row total"><span>Total</span><span id="grandTotal">0,00 €</span></div>
+  </div>
+
+  <div id="checkoutSection" class="hidden">
+    <div class="field"><label>Nom</label><input id="customerName" placeholder="Ex: Ahmed"></div>
+    <div class="field"><label>Téléphone</label><input id="customerPhone" placeholder="06 00 00 00 00"></div>
+    <div class="field"><label>Mode de retrait</label><select id="pickupMode"><option>À emporter</option><option>Retrait sur place</option></select></div>
+    <div class="field"><label>Heure souhaitée</label><input id="pickupTime" type="time" value="19:30"></div>
+    <button type="button" id="confirmBtn">Valider la commande</button>
+  </div>
+
+  <div id="successBox" class="success hidden">
+    <strong>Commande confirmée ✅</strong>
+    <div id="successText" style="margin-top:8px;"></div>
+  </div>
+
+  <button type="button" class="secondary" id="checkoutToggleBtn">Passer la commande</button>
+  <button type="button" class="danger" id="clearCartBtn">Vider le panier</button>
+  <button type="button" class="secondary" id="closeDrawerBtn">Fermer</button>
+</div>
+
+<div class="footer">
+  <div class="footer-row">
+    <div><small>Panier actuel</small><strong id="bottomTotal">0,00 €</strong></div>
+    <button type="button" style="width:auto;margin-top:0;" id="openCartBtn">Voir panier</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  const cart = [];
+  const overlay = document.getElementById('overlay');
+  const cartDrawer = document.getElementById('cartDrawer');
+  const cartItems = document.getElementById('cartItems');
+  const subtotalEl = document.getElementById('subtotal');
+  const feesEl = document.getElementById('fees');
+  const grandTotalEl = document.getElementById('grandTotal');
+  const bottomTotalEl = document.getElementById('bottomTotal');
+  const topCartCountEl = document.getElementById('topCartCount');
+  const checkoutSection = document.getElementById('checkoutSection');
+  const successBox = document.getElementById('successBox');
+  const successText = document.getElementById('successText');
+
+  function euro(value){ return value.toFixed(2).replace('.', ',') + ' €'; }
+  function getSubtotal(){ return cart.reduce((sum, item) => sum + item.price * item.qty, 0); }
+  function getFees(){ return cart.length > 0 ? 0.50 : 0; }
+  function getCount(){ return cart.reduce((sum, item) => sum + item.qty, 0); }
+
+  function updateCart(){
+    const subtotal = getSubtotal();
+    const fees = getFees();
+    const total = subtotal + fees;
+
+    subtotalEl.textContent = euro(subtotal);
+    feesEl.textContent = euro(fees);
+    grandTotalEl.textContent = euro(total);
+    bottomTotalEl.textContent = euro(total);
+    topCartCountEl.textContent = String(getCount());
+
+    if(cart.length === 0){
+      cartItems.innerHTML = '<div class="muted" style="margin-top:12px;">Votre panier est vide.</div>';
+      return;
+    }
+
+    cartItems.innerHTML = cart.map((item, index) => {
+      const lineTotal = item.price * item.qty;
+      return '<div class="cart-item"><div><div class="name">' + item.name + '</div><div class="meta">Commande démo • À emporter</div><div class="line-total">' + euro(lineTotal) + '</div><div class="qty-row"><button type="button" class="qty-btn secondary" data-action="minus" data-index="' + index + '">-</button><div class="qty-value">' + item.qty + '</div><button type="button" class="qty-btn secondary" data-action="plus" data-index="' + index + '">+</button><button type="button" class="small-btn danger" data-action="remove" data-index="' + index + '">Supprimer</button></div></div><div class="price">' + euro(item.price) + '</div></div>';
+    }).join('');
+  }
+
+  function openCart(){ overlay.style.display='block'; cartDrawer.style.display='block'; }
+  function closeDrawer(){ overlay.style.display='none'; cartDrawer.style.display='none'; }
+
+  function addToCart(name, price){
+    const existing = cart.find(item => item.name === name);
+    if(existing) existing.qty += 1;
+    else cart.push({name:name, price:price, qty:1});
+    updateCart();
+    openCart();
+  }
+
+  function increaseQty(index){
+    if(!cart[index]) return;
+    cart[index].qty += 1;
+    updateCart();
+  }
+
+  function decreaseQty(index){
+    if(!cart[index]) return;
+    cart[index].qty -= 1;
+    if(cart[index].qty <= 0) cart.splice(index, 1);
+    updateCart();
+  }
+
+  function removeItem(index){
+    if(!cart[index]) return;
+    cart.splice(index, 1);
+    updateCart();
+  }
+
+  function clearCart(){
+    cart.length = 0;
+    checkoutSection.classList.add('hidden');
+    successBox.classList.add('hidden');
+    updateCart();
+  }
+
+  function toggleCheckout(){
+    if(cart.length === 0){
+      alert('Ajoute au moins un produit au panier.');
+      return;
+    }
+    checkoutSection.classList.toggle('hidden');
+    successBox.classList.add('hidden');
+  }
+
+  function confirmOrder(){
+    if(cart.length === 0){
+      alert('Ajoute au moins un produit.');
+      return;
+    }
+    const name = document.getElementById('customerName').value.trim();
+    const phone = document.getElementById('customerPhone').value.trim();
+    const mode = document.getElementById('pickupMode').value;
+    const time = document.getElementById('pickupTime').value || '19:30';
+
+    if(!name || !phone){
+      alert('Remplis le nom et le téléphone.');
+      return;
+    }
+
+    const total = getSubtotal() + getFees();
+    const itemsText = cart.map(item => item.name + ' x' + item.qty).join(', ');
+
+    successText.innerHTML =
+      'Merci <strong>' + name + '</strong>.<br>' +
+      'Commande confirmée pour <strong>' + mode + '</strong> à <strong>' + time + '</strong>.<br>' +
+      'Téléphone : <strong>' + phone + '</strong><br>' +
+      'Articles : <strong>' + itemsText + '</strong><br>' +
+      'Total : <strong>' + euro(total) + '</strong>';
+
+    successBox.classList.remove('hidden');
+    checkoutSection.classList.add('hidden');
+  }
+
+  document.getElementById('openCartBtn').addEventListener('click', openCart);
+  document.getElementById('topCartBtn').addEventListener('click', openCart);
+  document.getElementById('closeDrawerBtn').addEventListener('click', closeDrawer);
+  document.getElementById('checkoutToggleBtn').addEventListener('click', toggleCheckout);
+  document.getElementById('confirmBtn').addEventListener('click', confirmOrder);
+  document.getElementById('clearCartBtn').addEventListener('click', clearCart);
+  overlay.addEventListener('click', closeDrawer);
+
+  cartItems.addEventListener('click', function(e){
+    const btn = e.target.closest('button[data-action]');
+    if(!btn) return;
+    const action = btn.getAttribute('data-action');
+    const index = Number(btn.getAttribute('data-index'));
+    if(action === 'plus') increaseQty(index);
+    if(action === 'minus') decreaseQty(index);
+    if(action === 'remove') removeItem(index);
+  });
+
+  window.addToCart = addToCart;
+  updateCart();
+})();
+</script>
+</body>
+</html>
